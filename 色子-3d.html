@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.js"></script>
+    <style>
+        .body{
+            width:500px;height:500px;position: absolute;left:0;top:0;right:0;bottom:0;margin:auto;
+        }
+        #scene1{
+            position: absolute;top:100px;left:30px;
+        }
+        #scene2{
+            position: absolute;top:100px;left:190px;
+        }
+        #scene3{
+            position: absolute;top:100px;left:350px;
+        }
+        .btn{
+            width:100px;height:32px;position: absolute;left:0;right:0;bottom:20px;margin:0 auto;border:1px solid #000;cursor:pointer;text-align: center;line-height: 32px;
+        }
+        .scene{
+            width:100px;height:100px;perspective:800px;
+        }
+        .box{
+            width:100px;height:100px;position:relative;top:0;left:0;font-size:40px;line-height:100px;text-align:center;transform-style:preserve-3d;transform-origin:center center 50px;transform:rotateX(-30deg) rotateY(45deg);
+        }
+        .box div{
+            width:100%;height:100%;position:absolute;top:0;left:0;  color: transparent;  line-height: 100px;  text-align: center;  font-weight: bold;border:1px solid #fff; /* rgba( 255,255,255, 1 ) */
+            box-shadow:1px 0 3px #fff,1px 0px 10px #efefef;
+            border-radius:8px;
+            background:-webkit-radial-gradient(center, #d81002, #b20c00 );
+            background:-moz-radial-gradient(center, #d81002, #b20c00 );
+            background:-ms-radial-gradient(center, #d81002, #b20c00 );
+            background:-o-radial-gradient(center, #d81002, #b20c00 );
+            background:radial-gradient(center, #d81002, #b20c00 );
+        }
+        .box div:nth-child(1){
+            transform:rotateX(90deg);transform-origin:top;
+        }
+        .box div:nth-child(2){
+            transform:rotateY(-90deg);transform-origin:left;
+        }
+        .box div:nth-child(3){
+            transform:rotateY(180deg)
+        }
+        .box div:nth-child(4){
+            transform:rotateY(90deg);transform-origin:right;
+        }
+        .box div:nth-child(5){
+            transform:rotateX(-90deg);transform-origin:bottom;
+        }
+        .box div:nth-child(6){
+            transform:translateZ(100px);
+        }
+        .box div ul{
+            width:72px;height:72px;
+            list-style: none;padding:0;
+            position:absolute;top:0;left:0;right:0;bottom:0;margin:auto;;
+        }
+        .box div ul li{
+            width:24px;height:24px;float: left;
+        }
+        .box div ul li span{
+            width:18px;height:18px; margin:3px auto;  display:block;  background:-webkit-linear-gradient(top, #eee, #fff );  background:-moz-linear-gradient(top, #eee, #fff );  background:-ms-linear-gradient(top, #eee, #fff );  background:-o-linear-gradient(top, #eee, #fff );  background:linear-gradient(top, #eee, #fff );  border-radius:25px;  box-shadow:-1px -1px 2px #000;
+        }
+        /*一点,x、y、z（-30,i,0）*/
+        .box.one{
+            transform:rotateX(-30deg) rotateY(45deg) rotateZ(0deg);
+        }
+        /*两点,x、y、z（150,i,-90）*/
+        .box.two{
+            transform: rotateX(150deg) rotateY(-45deg) rotateZ(-90deg);
+        }
+        /*三点,x、y、z（150,i,0）*/
+        .box.three{
+            transform: rotateX(150deg) rotateY(45deg) rotateZ(0deg);
+        }
+        /*四点,x、y、z（150,i,90）*/
+        .box.four{
+            transform: rotateX(150deg) rotateY(-45deg) rotateZ(90deg);
+        }
+        /*五点,x、y、z（60,180,i）*/
+        .box.five{
+            transform: rotateX(60deg)  rotateY(180deg) rotateZ(45deg);
+        }
+        /*六点,x、y、z（60,0,i）*/
+        .box.six{
+            transform: rotateX(60deg) rotateY(0deg) rotateZ(45deg);
+        }
+        .zhuan1{
+            animation:ani1 2s forwards;
+        }
+        .zhuan2{
+            animation:ani2 2s forwards;
+        }
+        .zhuan3{
+            animation:ani3 2s forwards;
+        }
+        .zhuan4{
+            animation:ani4 2s forwards;
+        }
+        .zhuan5{
+            animation:ani5 2s forwards;
+        }
+        .zhuan6{
+            animation:ani6 2s forwards;
+        }
+        .ezhuan1{
+            animation:guodu1 1s forwards,end1 2s forwards;
+        }
+        .ezhuan2{
+            animation:guodu2 1s forwards,end2 2s forwards;
+        }
+        .ezhuan3{
+            animation:guodu3 1s forwards,end3 2s forwards;
+        }
+        .ezhuan4{
+            animation:guodu4 1s forwards,end4 2s forwards;
+        }
+        .ezhuan5{
+            animation:guodu5 1s forwards,end5 2s forwards;
+        }
+        .ezhuan6{
+            animation:guodu6 1s forwards,end6 2s forwards;
+        }
+
+        @keyframes ani1 {5%{transform: rotateX(1592deg) rotateY(19846deg) rotateZ(16464deg);}100%{transform:rotateX(-30deg) rotateY(45deg) rotateZ(0deg);}}
+        @keyframes ani2 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(-45deg) rotateZ(-90deg);}}
+        @keyframes ani3 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(45deg) rotateZ(0deg);}}
+        @keyframes ani4 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(-45deg) rotateZ(90deg);}}
+        @keyframes ani5 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(60deg)  rotateY(180deg) rotateZ(45deg);}}
+        @keyframes ani6 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(60deg) rotateY(0deg) rotateZ(45deg);}}
+
+        /*yi*/
+        @keyframes guodu1 {5%{transform: rotateX(1592deg) rotateY(19846deg) rotateZ(16464deg);}100%{transform: rotateX(150deg) rotateY(-45deg) rotateZ(90deg);}}
+        @keyframes end1 {5%{transform: rotateX(1592deg) rotateY(19846deg) rotateZ(16464deg);}100%{transform:rotateX(-30deg) rotateY(45deg) rotateZ(0deg);}}
+
+        /*er*/
+        @keyframes guodu2 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(60deg)  rotateY(180deg) rotateZ(45deg);}}
+        @keyframes end2 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(-45deg) rotateZ(-90deg);}}
+
+        /*san*/
+        @keyframes guodu3 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(-45deg) rotateZ(90deg);}}
+        @keyframes end3 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(45deg) rotateZ(0deg);}}
+
+        /*si*/
+        @keyframes guodu4 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(45deg) rotateZ(0deg);}}
+        @keyframes end4 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(-45deg) rotateZ(90deg);}}
+
+        /*wu*/
+        @keyframes guodu5 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(60deg)  rotateY(180deg) rotateZ(45deg);}}
+        @keyframes end5 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(60deg)  rotateY(180deg) rotateZ(45deg);}}
+
+        /*liu*/
+        @keyframes guodu6 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(150deg) rotateY(-45deg) rotateZ(-90deg);}}
+        @keyframes end6 {5%{transform: rotateX(1684deg) rotateY(4185deg) rotateZ(9875deg);}100%{transform: rotateX(60deg) rotateY(0deg) rotateZ(45deg);}}
+    </style>
+</head>
+<body>
+    <div class="body">
+        <div class="scene" id="scene1">
+            <div class="box">
+                <div>1
+                    <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+                <div>2
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>4
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>5
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>6
+                    <ul>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>3
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="scene" id="scene2">
+            <div class="box">
+                <div>1
+                    <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+                <div>2
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>4
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>5
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>6
+                    <ul>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>3
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="scene" id="scene3">
+            <div class="box">
+                <div>1
+                    <ul>
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+                <div>2
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>4
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>5
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>6
+                    <ul>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+
+                        <li></li>
+                        <li></li>
+                        <li></li>
+
+                        <li><span></span></li>
+                        <li><span></span></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+                <div>3
+                    <ul>
+                        <li><span></span></li>
+                        <li></li>
+                        <li></li>
+
+                        <li></li>
+                        <li><span></span></li>
+                        <li></li>
+
+                        <li></li>
+                        <li></li>
+                        <li><span></span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="btn">开始</div>
+    </div>
+    <script>
+       /* var arr=["one","two","three","four","five","six"];*/
+        var zhuan=["zhuan1","zhuan2","zhuan3","zhuan4","zhuan5","zhuan6"];
+        var ezhuan=["ezhuan1","ezhuan2","ezhuan3","ezhuan4","ezhuan5","ezhuan6"];
+        $(".btn").on("click",function(){
+            var shaizi1=rotateFun("#scene1 .box");
+            var shaizi2=rotateFun("#scene2 .box");
+            var shaizi3=rotateFun("#scene3 .box");
+        })
+        function rotateFun(obj){
+            this.obj=$(obj);
+            this.random=Math.floor(Math.random()*6);
+            if(!this.obj.hasClass(zhuan[this.random])){
+                this.obj[0].className="box "+zhuan[this.random];
+            }else{
+                this.obj[0].className="box "+ezhuan[this.random];
+            }
+        }
+    </script>
+
+</body>
+</html>
